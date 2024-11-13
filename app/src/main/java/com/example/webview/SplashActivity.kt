@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,8 +24,13 @@ class SplashActivity : AppCompatActivity() {
 
         binding.animationView.setAnimation(R.raw.android)
         binding.animationView.playAnimation()
+        val sessionManager = SessionManager(this)
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            val intent = if(sessionManager.isLogin()){
+                Intent(this@SplashActivity, MainActivity::class.java)
+            }else{
+                Intent(this@SplashActivity, LoginActivity::class.java)
+            }
             startActivity(intent)
             finish()
         }, 3000)
